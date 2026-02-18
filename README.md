@@ -62,5 +62,12 @@ This project uses [Prisma](https://www.prisma.io/) with PostgreSQL. The schema d
     npx prisma studio
     ```
 
+5.  **Verify Setup**:
+    Check if your database is in sync and your schema is valid:
+    ```bash
+    npx prisma migrate status
+    npx prisma validate
+    ```
+
 ### Prisma Client
 A singleton PrismaClient instance is exported from `src/lib/prisma.ts` to prevent multiple connections during development hot-reloading.
