@@ -37,19 +37,30 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Database Setup
 
-This project uses [Prisma](https://www.prisma.io/) with PostgreSQL.
+This project uses [Prisma](https://www.prisma.io/) with PostgreSQL. The schema defines models for the Shamiri Supervisor Copilot, including `Supervisor`, `Fellow`, `Group`, `Session`, `Transcript`, `AIAnalysis`, and `SupervisorReview`.
 
-1.  **Configure Environment**: Update `.env` with your database connection string:
-    ```env
-    DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
-    ```
+### key Commands
 
-2.  **Apply Migrations**: Run the following to create tables in your database:
+1.  **Configure Environment**:
+    Ensure your `.env` file has the correct `DATABASE_URL`.
+
+2.  **Apply Migrations**:
+    Run the following to apply schema changes to your database:
     ```bash
-    npx prisma migrate dev --name init
+    npx prisma migrate dev
     ```
 
-3.  **Generate Client**: If you make schema changes, update the client:
+3.  **Generate Client**:
+    If you modify `prisma/schema.prisma`, update the generated client:
     ```bash
     npx prisma generate
     ```
+
+4.  **View Data**:
+    Use Prisma Studio to view and edit data in your browser:
+    ```bash
+    npx prisma studio
+    ```
+
+### Prisma Client
+A singleton PrismaClient instance is exported from `src/lib/prisma.ts` to prevent multiple connections during development hot-reloading.

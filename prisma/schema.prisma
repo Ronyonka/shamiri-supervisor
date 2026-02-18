@@ -21,3 +21,115 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Supervisor {
+  id           String             @id @default(cuid())
+  email        String             @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime           @default(now())
+  fellows      Fellow[]
+  sessions     Session[]
+  reviews      SupervisorReview[]
+}
+
+model Fellow {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  supervisorId String
+  supervisor   Supervisor @relation(fields: [supervisorId], references: [id])
+  createdAt    DateTime  @default(now())
+  groups       Group[]
+  sessions     Session[]
+
+  @@index([supervisorId])
+}
+
+model Group {
+  id        String    @id @default(cuid())
+  name      String
+  fellowId  String
+  fellow    Fellow    @relation(fields: [fellowId], references: [id])
+  createdAt DateTime  @default(now())
+  sessions  Session[]
+
+  @@index([fellowId])
+}
+
+enum SessionStatus {
+  PROCESSED
+  FLAGGED
+  SAFE
+}
+
+model Session {
+  id           String            @id @default(cuid())
+  fellowId     String
+  groupId      String
+  supervisorId String
+  date         DateTime
+  status       SessionStatus
+  createdAt    DateTime          @default(now())
+  
+  fellow       Fellow            @relation(fields: [fellowId], references: [id])
+  group        Group             @relation(fields: [groupId], references: [id])
+  supervisor   Supervisor        @relation(fields: [supervisorId], references: [id])
+  
+  transcript   Transcript?
+  analysis     AIAnalysis?
+  reviews      SupervisorReview[]
+
+  @@index([fellowId])
+  @@index([groupId])
+  @@index([supervisorId])
+}
+
+model Transcript {
+  id        String   @id @default(cuid())
+  sessionId String   @unique
+  session   Session  @relation(fields: [sessionId], references: [id])
+  rawText   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+enum RiskStatus {
+  SAFE
+  RISK
+}
+
+model AIAnalysis {
+  id                           String     @id @default(cuid())
+  sessionId                    String     @unique
+  session                      Session    @relation(fields: [sessionId], references: [id])
+  summary                      String     @db.Text
+  contentCoverageScore         Int
+  contentCoverageJustification String     @db.Text
+  facilitationScore            Int
+  facilitationJustification    String     @db.Text
+  protocolSafetyScore          Int
+  protocolSafetyJustification  String     @db.Text
+  riskFlag                     RiskStatus
+  riskQuote                    String?    @db.Text
+  generatedAt                  DateTime   @default(now())
+}
+
+enum ReviewDecision {
+  VALIDATED
+  REJECTED
+}
+
+model SupervisorReview {
+  id             String         @id @default(cuid())
+  sessionId      String
+  session        Session        @relation(fields: [sessionId], references: [id])
+  supervisorId   String
+  supervisor     Supervisor     @relation(fields: [supervisorId], references: [id])
+  decision       ReviewDecision
+  overrideStatus RiskStatus?
+  note           String?        @db.Text
+  reviewedAt     DateTime       @default(now())
+
+  @@index([sessionId])
+  @@index([supervisorId])
+}
