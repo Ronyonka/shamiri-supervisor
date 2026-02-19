@@ -10,13 +10,15 @@ import {
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
 import { StatusBadge } from "@/components/StatusBadge"
+import { getDisplayStatus } from "@/lib/sessionStatus"
 import { useRouter } from "next/navigation"
-import type { Session, Fellow, Group, AIAnalysis } from "@/generated/prisma/client"
+import type { Session, Fellow, Group, AIAnalysis, SupervisorReview } from "@/generated/prisma/client"
 
 type SessionWithRelations = Session & {
   fellow: Fellow
   group: Group
   analysis: AIAnalysis | null
+  reviews: SupervisorReview[]
 }
 
 interface SessionTableProps {
@@ -36,26 +38,6 @@ export function SessionTable({ sessions }: SessionTableProps) {
       month: "short",
       year: "numeric",
     })
-  }
-
-  const getDisplayStatus = (session: SessionWithRelations) => {
-    // 1. Missing Analysis
-    if (!session.analysis) {
-      return "MISSING_ANALYSIS"
-    }
-
-    // 2. Risk Found (Override even if marked PROCESSED)
-    if (session.analysis.riskFlag === "RISK") {
-      return "FLAGGED"
-    }
-
-    // 3. Ready for Review (Safe analysis + waiting for review)
-    if (session.analysis.riskFlag === "SAFE" && session.status === "PROCESSED") {
-      return "READY_FOR_REVIEW"
-    }
-
-    // 4. Default to database status (SAFE, FLAGGED, etc.)
-    return session.status
   }
 
   return (

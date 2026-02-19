@@ -9,6 +9,10 @@ export default async function DashboardPage() {
       fellow: true,
       group: true,
       analysis: true,
+      reviews: {
+        orderBy: { reviewedAt: "desc" },
+        take: 1,
+      },
     },
     orderBy: {
       date: "desc",

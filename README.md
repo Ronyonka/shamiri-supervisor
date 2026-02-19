@@ -121,6 +121,21 @@ To get the analysis results for a session:
 GET /api/sessions/[session-id]/analysis
 ```
 
+## Session Status Workflow
+
+Sessions move through four states. AI flags sessions for review; only supervisors set the final verdict.
+
+| Status               | Badge  | Meaning                                      |
+| :------------------- | :----- | :------------------------------------------- |
+| **Missing Analysis** | Grey   | AI analysis has not run yet.                 |
+| **Flagged for Review** | Blue | AI analyzed; awaiting supervisor review.      |
+| **Safe**             | Green  | Supervisor confirmed safe (human-verified).  |
+| **Risk**             | Red    | Supervisor confirmed risk (human-verified).  |
+
+> **Key principle:** AI flags, humans decide. Status can change if a supervisor submits a new review.
+> 
+> For the full lifecycle, decision matrix, and edge cases, see [docs/status-workflow.md](docs/status-workflow.md).
+
 ## Tech Stack
 
 - **Framework**: Next.js 14 (App Router)

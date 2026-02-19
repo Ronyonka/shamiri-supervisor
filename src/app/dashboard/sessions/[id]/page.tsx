@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { InsightCard } from "@/components/InsightCard";
 import { AnalyseButton } from "@/components/AnalyseButton";
 import { ReviewPanel } from "@/components/ReviewPanel";
+import { StatusBadge } from "@/components/StatusBadge";
+import { getDisplayStatus } from "@/lib/sessionStatus";
 
 interface PageProps {
   params: Promise<{
@@ -32,6 +33,8 @@ export default async function SessionDetailsPage({ params }: PageProps) {
     notFound();
   }
 
+  const displayStatus = getDisplayStatus(session);
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       {/* Header Row */}
@@ -51,7 +54,7 @@ export default async function SessionDetailsPage({ params }: PageProps) {
                 </p>
              </div>
              
-             <StatusBadge status={session.status} />
+             <StatusBadge status={displayStatus} />
         </div>
       </div>
 
@@ -85,18 +88,4 @@ export default async function SessionDetailsPage({ params }: PageProps) {
       </div>
     </div>
   );
-}
-
-function StatusBadge({ status }: { status: "PROCESSED" | "FLAGGED" | "SAFE" }) {
-    const styles = {
-        PROCESSED: "bg-blue-100 text-blue-700 hover:bg-blue-100/80 border-blue-200",
-        FLAGGED: "bg-red-100 text-red-700 hover:bg-red-100/80 border-red-200",
-        SAFE: "bg-green-100 text-green-700 hover:bg-green-100/80 border-green-200",
-    };
-
-    return (
-        <Badge variant="outline" className={`text-base py-1 px-4 ${styles[status]}`}>
-            {status}
-        </Badge>
-    );
 }
