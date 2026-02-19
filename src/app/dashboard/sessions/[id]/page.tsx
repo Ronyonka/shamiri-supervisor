@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { InsightCard } from "@/components/InsightCard";
 import { AnalyseButton } from "@/components/AnalyseButton";
+import { ReviewPanel } from "@/components/ReviewPanel";
 
 interface PageProps {
   params: Promise<{
@@ -20,6 +21,10 @@ export default async function SessionDetailsPage({ params }: PageProps) {
         group: true,
         transcript: true,
         analysis: true,
+        reviews: {
+            orderBy: { reviewedAt: "desc" },
+            take: 1,
+        },
     }
   });
 
@@ -57,6 +62,7 @@ export default async function SessionDetailsPage({ params }: PageProps) {
         {session.analysis ? (
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <InsightCard analysis={session.analysis} />
+                <ReviewPanel sessionId={session.id} existingReview={session.reviews[0]} />
             </div>
         ) : (
              <div className="bg-slate-50 border border-slate-200 rounded-lg p-12 text-center space-y-6">
