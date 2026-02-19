@@ -1,4 +1,4 @@
-import { AIAnalysis, RiskStatus } from "@/generated/prisma/client";
+import { AIAnalysis, RiskStatus } from "@prisma/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";

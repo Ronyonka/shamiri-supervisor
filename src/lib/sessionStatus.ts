@@ -1,4 +1,4 @@
-import type { AIAnalysis, SupervisorReview } from "@/generated/prisma/client"
+import type { AIAnalysis, SupervisorReview } from "@prisma/client"
 
 interface SessionWithStatusData {
   analysis: AIAnalysis | null

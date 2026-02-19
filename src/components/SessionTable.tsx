@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { StatusBadge } from "@/components/StatusBadge"
 import { getDisplayStatus } from "@/lib/sessionStatus"
 import { useRouter } from "next/navigation"
-import type { Session, Fellow, Group, AIAnalysis, SupervisorReview } from "@/generated/prisma/client"
+import type { Session, Fellow, Group, AIAnalysis, SupervisorReview } from "@prisma/client"
 
 type SessionWithRelations = Session & {
   fellow: Fellow

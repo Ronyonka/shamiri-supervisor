@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
-import { ReviewDecision, RiskStatus, SessionStatus } from "@/generated/prisma/client";
+import { ReviewDecision, RiskStatus, SessionStatus } from "@prisma/client";
 
 const reviewSchema = z.object({
   decision: z.nativeEnum(ReviewDecision),
