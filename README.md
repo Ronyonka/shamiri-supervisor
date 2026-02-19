@@ -50,19 +50,25 @@ This project uses [Prisma](https://www.prisma.io/) with PostgreSQL. The schema d
     npx prisma migrate dev
     ```
 
-3.  **Generate Client**:
+3.  **Seed the Database**:
+    Populate the database with sample data (supervisors, fellows, groups, sessions, transcripts):
+    ```bash
+    npx prisma db seed
+    ```
+
+4.  **Generate Client**:
     If you modify `prisma/schema.prisma`, update the generated client:
     ```bash
     npx prisma generate
     ```
 
-4.  **View Data**:
+5.  **View Data**:
     Use Prisma Studio to view and edit data in your browser:
     ```bash
     npx prisma studio
     ```
 
-5.  **Verify Setup**:
+6.  **Verify Setup**:
     Check if your database is in sync and your schema is valid:
     ```bash
     npx prisma migrate status
