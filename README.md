@@ -1,105 +1,136 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Shamiri Supervisor Copilot
+
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![Next.js](https://img.shields.io/badge/next.js-14.1-000000.svg)
+![TypeScript](https://img.shields.io/badge/typescript-5.0-blue.svg)
+![Prisma](https://img.shields.io/badge/prisma-5.10-green.svg)
+
+**AI-powered session review and quality assurance platform for Shamiri Fellows.**
+
+The Supervisor Copilot helps clinical supervisors efficiently review therapy sessions by providing automated transcripts, AI-generated quality insights, risk detection, and a streamlined validation workflow.
+
+## Features
+
+- 🤖 **Automated Analysis**: AI-driven evaluation of session transcripts for protocol adherence and facilitation quality.
+- 🚩 **Risk Detection**: Automatic highlighting of risk markers (self-harm, abuse) for immediate supervisor attention.
+- 📊 **Quality Scoring**: Quantitative metrics for Content Coverage, Facilitation Quality, and Protocol Safety.
+- 📝 **Review Workflow**: Dedicated interface for supervisors to validate AI findings and provide feedback.
+- 🔒 **Secure Access**: Role-based access control for supervisors.
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to set up the project locally.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Node.js 18+
+- PostgreSQL
+- OpenAI API Key
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/Ronyonka/shamiri-supervisor.git
+    cd shamiri-supervisor
+    ```
 
-## Learn More
+2.  **Install dependencies**
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+### Environment Setup
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1.  **Create your environment file**
+    Copy the example configuration:
+    ```bash
+    cp .env.example .env
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2.  **Configure environment variables**
+    Open `.env` and fill in the following values:
 
-## Deploy on Vercel
+    ```bash
+    # Database connection string (PostgreSQL)
+    DATABASE_URL="postgresql://user:password@localhost:5432/shamiri_db?schema=public"
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    # OpenAI API Key for Transcript Analysis
+    OPENAI_API_KEY="sk-..."
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    # NextAuth Configuration
+    NEXTAUTH_URL="http://localhost:3000"
+    NEXTAUTH_SECRET="supersecret_dev_key" # Can be any random string for development
+    ```
 
-## Database Setup
+### Database Setup
 
-This project uses [Prisma](https://www.prisma.io/) with PostgreSQL. The schema defines models for the Shamiri Supervisor Copilot, including `Supervisor`, `Fellow`, `Group`, `Session`, `Transcript`, `AIAnalysis`, and `SupervisorReview`.
-
-### key Commands
-
-1.  **Configure Environment**:
-    Ensure your `.env` file has the correct `DATABASE_URL`.
-
-2.  **Apply Migrations**:
-    Run the following to apply schema changes to your database:
+1.  **Run Migrations**
+    Apply the Prisma schema to your local database:
     ```bash
     npx prisma migrate dev
     ```
 
-3.  **Seed the Database**:
-    Populate the database with sample data (supervisors, fellows, groups, sessions, transcripts):
+2.  **Seed the Database**
+    Populate the database with mock supervisors, fellows, groups, and sessions:
     ```bash
     npx prisma db seed
     ```
 
-4.  **Generate Client**:
-    If you modify `prisma/schema.prisma`, update the generated client:
-    ```bash
-    npx prisma generate
-    ```
+### Running the Application
 
-5.  **View Data**:
-    Use Prisma Studio to view and edit data in your browser:
-    ```bash
-    npx prisma studio
-    ```
+Start the development server:
 
-6.  **Verify Setup**:
-    Check if your database is in sync and your schema is valid:
-    ```bash
-    npx prisma migrate status
-    npx prisma validate
-    ```
+```bash
+npm run dev
+```
 
-### Prisma Client
-A singleton PrismaClient instance is exported from `src/lib/prisma.ts` to prevent multiple connections during development hot-reloading.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Authentication
+
+The application uses a secure login system restricted to seeded supervisors.
+
+**User Credentials (Mock Data):**
+
+| Role | Email | Password |
+| :--- | :--- | :--- |
+| **Supervisor** | `amara@shamiri.co` | `shamiri123` |
+
+> **Note:** There is no public registration. Supervisors must be pre-provisioned in the database.
 
 ## AI Analysis Engine
 
-The application includes an AI-powered engine to analyze therapy session transcripts.
+The application includes an internal API to trigger and retrieve session analysis.
 
-### Setup
+### Trigger Analysis
+To analyze a specific session (ensure the session exists and has a transcript):
 
-1.  **OpenAI API Key**:
-    Add your OpenAI API key to `.env`:
-    ```bash
-    OPENAI_API_KEY=sk-...
-    ```
+```http
+POST /api/sessions/[session-id]/analyze
+```
 
-### Usage
+### Retrieve Results
+To get the analysis results for a session:
 
-1.  **Analyze a Session**:
-    Send a POST request to trigger analysis for a specific session:
-    ```bash
-    POST /api/sessions/[session-id]/analyze
-    ```
+```http
+GET /api/sessions/[session-id]/analysis
+```
 
-2.  **Retrieve Analysis**:
-    Get the analysis results:
-    ```bash
-    GET /api/sessions/[session-id]/analysis
-    ```
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Database**: PostgreSQL
+- **ORM**: Prisma
+- **Auth**: NextAuth.js v4
+- **UI**: Tailwind CSS, shadcn/ui
+- **AI**: OpenAI API
+
+## License
+
+This project is proprietary and confidential to Shamiri Institute.
