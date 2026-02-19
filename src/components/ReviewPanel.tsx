@@ -113,7 +113,7 @@ export function ReviewPanel({ sessionId, existingReview }: ReviewPanelProps) {
 
   if (existingReview) {
     const isValidated = existingReview.decision === "VALIDATED";
-    const date = new Date(existingReview.reviewedAt).toLocaleDateString(undefined, {
+    const date = new Date(existingReview.reviewedAt).toLocaleDateString("en-US", {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

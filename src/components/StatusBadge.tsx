@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge"
-import { AlertTriangle } from "lucide-react"
+import { AlertTriangle, Clock, CheckCircle } from "lucide-react" // Added icons
 import { SessionStatus } from "@/generated/prisma/enums"
 
 interface StatusBadgeProps {
@@ -9,6 +9,7 @@ interface StatusBadgeProps {
 export function StatusBadge({ status }: StatusBadgeProps) {
   switch (status) {
     case SessionStatus.SAFE:
+    case "SAFE": // Handle computed string
       return (
         <Badge 
           variant="outline" 
@@ -17,16 +18,18 @@ export function StatusBadge({ status }: StatusBadgeProps) {
           Safe
         </Badge>
       )
+    case "READY_FOR_REVIEW": // Computed state for Safe Analysis + Processed
     case SessionStatus.PROCESSED:
       return (
         <Badge 
           variant="outline" 
           className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 font-medium"
         >
-          Processed
+          Ready for Review
         </Badge>
       )
     case SessionStatus.FLAGGED:
+    case "FLAGGED": // Handle computed string
       return (
         <Badge 
           variant="outline"
@@ -34,6 +37,16 @@ export function StatusBadge({ status }: StatusBadgeProps) {
         >
           <AlertTriangle className="h-3.5 w-3.5" />
           Flagged for Review
+        </Badge>
+      )
+    case "MISSING_ANALYSIS":
+      return (
+        <Badge 
+          variant="secondary" 
+          className="bg-gray-100 text-gray-600 hover:bg-gray-200 gap-1.5"
+        >
+          <Clock className="h-3.5 w-3.5" />
+          Missing Analysis
         </Badge>
       )
     default:

@@ -8,6 +8,7 @@ export default async function DashboardPage() {
     include: {
       fellow: true,
       group: true,
+      analysis: true,
     },
     orderBy: {
       date: "desc",
