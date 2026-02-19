@@ -77,3 +77,29 @@ This project uses [Prisma](https://www.prisma.io/) with PostgreSQL. The schema d
 
 ### Prisma Client
 A singleton PrismaClient instance is exported from `src/lib/prisma.ts` to prevent multiple connections during development hot-reloading.
+
+## AI Analysis Engine
+
+The application includes an AI-powered engine to analyze therapy session transcripts.
+
+### Setup
+
+1.  **OpenAI API Key**:
+    Add your OpenAI API key to `.env`:
+    ```bash
+    OPENAI_API_KEY=sk-...
+    ```
+
+### Usage
+
+1.  **Analyze a Session**:
+    Send a POST request to trigger analysis for a specific session:
+    ```bash
+    POST /api/sessions/[session-id]/analyze
+    ```
+
+2.  **Retrieve Analysis**:
+    Get the analysis results:
+    ```bash
+    GET /api/sessions/[session-id]/analysis
+    ```
