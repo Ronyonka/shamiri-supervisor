@@ -7,6 +7,8 @@ import { getDisplayStatus } from "@/lib/sessionStatus"
 export const dynamic = "force-dynamic"
 
 export default async function DashboardPage() {
+  // Optimize: Fetch necessary fields for the dashboard.
+  // Note: We include full models to satisfy types in getDisplayStatus for now.
   const sessions = await prisma.session.findMany({
     include: {
       fellow: true,

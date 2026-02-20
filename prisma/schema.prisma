@@ -83,6 +83,7 @@ model Session {
   @@index([fellowId])
   @@index([groupId])
   @@index([supervisorId])
+  @@index([date])
 }
 
 model Transcript {

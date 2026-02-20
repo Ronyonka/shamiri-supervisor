@@ -77,9 +77,9 @@ export function AnalyseButton({
             <Button 
                 onClick={handleAnalyze} 
                 variant={variant}
-                className={`w-full sm:w-auto ${variant === 'default' ? 'bg-[#2D6A4F] hover:bg-[#1e4635]' : ''}`}
+                className={`w-full sm:w-auto cursor-pointer ${variant === 'default' ? 'bg-[#2D6A4F] hover:bg-[#1e4635]' : ''}`}
             >
-                {variant === "outline" && <RefreshCw className="mr-2 h-4 w-4" />}
+                {(variant === "outline" || variant === "secondary" || label === "Re-analyse") && <RefreshCw className="mr-2 h-4 w-4" />}
                 {label}
             </Button>
         )}
