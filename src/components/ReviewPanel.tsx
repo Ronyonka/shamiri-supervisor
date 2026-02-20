@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2, ClipboardCheck, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Loader2, ClipboardCheck, AlertTriangle, CheckCircle2, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -120,40 +120,44 @@ export function ReviewPanel({ sessionId, existingReview }: ReviewPanelProps) {
     });
 
     return (
-      <Card className="border-t-4 border-t-[#2D6A4F] mt-8 shadow-sm">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-lg text-[#2D6A4F]">
-            <ClipboardCheck className="h-5 w-5" />
-            Supervisor Review
+      <Card className="border-t-[6px] border-t-[#064E3B] mt-12 shadow-sm bg-white overflow-hidden">
+        <CardHeader className="pb-2 bg-slate-50/50">
+          <CardTitle className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#064E3B]">
+            <ClipboardCheck className="h-4 w-4" />
+            Supervisor Review Record
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <Separator className="mb-6" />
-          <Alert variant={isValidated ? "default" : "destructive"} className={isValidated ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}>
+        <CardContent className="pt-6">
+          <Alert variant={isValidated ? "default" : "destructive"} className={isValidated ? "bg-emerald-50/50 border-emerald-200" : "bg-red-50/50 border-red-200"}>
             {isValidated ? (
-               <CheckCircle2 className="h-4 w-4 text-green-600" />
+               <CheckCircle2 className="h-5 w-5 text-emerald-600" />
             ) : (
-               <AlertTriangle className="h-4 w-4 text-red-600" />
+               <AlertTriangle className="h-5 w-5 text-red-600" />
             )}
-            <AlertTitle className="flex items-center gap-2 mb-2">
-              Review Status: 
-              <Badge variant={isValidated ? "default" : "destructive"} className={isValidated ? "bg-green-600 hover:bg-green-700" : ""}>
+            <AlertTitle className="flex items-center gap-3 mb-3">
+              <span className="text-sm font-bold uppercase tracking-tight">Review Outcome:</span> 
+              <Badge variant={isValidated ? "default" : "destructive"} className={isValidated ? "bg-emerald-600 hover:bg-emerald-700 px-3" : "px-3"}>
                 {existingReview.decision}
               </Badge>
             </AlertTitle>
-            <AlertDescription className="text-sm">
-               <p className="mb-2">Reviewed on {date}</p>
+            <AlertDescription className="text-sm space-y-3">
+               <p className="font-medium text-slate-600">Archived on {date}</p>
                
                {existingReview.overrideStatus && (
-                 <p className="font-medium mb-1">
-                   Risk status overridden to: {existingReview.overrideStatus}
-                 </p>
+                 <div className="bg-white/60 p-2 rounded border border-current/10 inline-block">
+                    <p className="font-bold text-xs uppercase tracking-tight">
+                      System Override: <span className="text-red-700">{existingReview.overrideStatus}</span>
+                    </p>
+                 </div>
                )}
                
                {existingReview.note && (
-                 <p className="text-muted-foreground italic text-sm mt-2 border-l-2 pl-3 border-slate-300">
-                   "{existingReview.note}"
-                 </p>
+                 <div className="mt-4 pt-4 border-t border-current/10">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Supervisor Notes</p>
+                    <p className="text-slate-700 italic leading-relaxed">
+                      "{existingReview.note}"
+                    </p>
+                 </div>
                )}
             </AlertDescription>
           </Alert>
@@ -163,63 +167,64 @@ export function ReviewPanel({ sessionId, existingReview }: ReviewPanelProps) {
   }
 
   return (
-    <Card className="border-t-4 border-t-[#2D6A4F] mt-8 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center gap-2 text-lg text-[#2D6A4F]">
-          <ClipboardCheck className="h-5 w-5" />
-          Supervisor Review
+    <Card className="border-t-[6px] border-t-[#064E3B] mt-12 shadow-md bg-white overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+      <CardHeader className="pb-4 bg-slate-50/50 border-b">
+        <CardTitle className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-[#064E3B]">
+          <ClipboardCheck className="h-4 w-4" />
+          Supervisor Validation Required
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <Separator />
-        
+      <CardContent className="space-y-8 pt-8 px-8">
         {!isRejecting ? (
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-6">
             <Button 
                 onClick={handleValidate} 
                 disabled={isSubmitting}
-                className="flex-1 bg-green-700 hover:bg-green-800 text-white"
+                className="flex-[2] h-14 bg-[#064E3B] hover:bg-[#032F24] text-white text-lg font-bold shadow-lg shadow-emerald-900/10 transition-all hover:scale-[1.01] active:scale-[0.99]"
             >
-              {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
-              Validate AI Findings
+              {isSubmitting ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <CheckCircle2 className="mr-2 h-5 w-5" />}
+              Validate Analysis
             </Button>
             
             <Button 
                 variant="outline"
                 onClick={() => setIsRejecting(true)}
                 disabled={isSubmitting}
-                className="flex-1 border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"
+                className="flex-1 h-14 border-slate-200 text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-semibold"
             >
               <AlertTriangle className="mr-2 h-4 w-4" />
-              Reject / Override
+              Flag / Override
             </Button>
           </div>
         ) : (
-          <div className="bg-slate-50 p-6 rounded-lg border border-slate-200">
-             <div className="flex items-center justify-between mb-4">
-                 <h3 className="font-semibold text-gray-900">Reject Analysis Findings</h3>
-                 <Button variant="ghost" size="sm" onClick={() => setIsRejecting(false)} disabled={isSubmitting}>
+          <div className="bg-slate-50 p-8 rounded-xl border border-slate-200 shadow-inner">
+             <div className="flex items-center justify-between mb-6">
+                 <div className="space-y-1">
+                    <h3 className="font-bold text-[#991b1b] uppercase text-xs tracking-widest">Override Protocol</h3>
+                    <p className="text-sm text-slate-500">Provide justification for rejecting automated findings.</p>
+                 </div>
+                 <Button variant="ghost" size="sm" onClick={() => setIsRejecting(false)} disabled={isSubmitting} className="hover:bg-slate-200 font-bold text-xs uppercase">
                     Cancel
                  </Button>
              </div>
              
              <Form {...form}>
-               <form onSubmit={form.handleSubmit(onSubmitRejection)} className="space-y-4">
+               <form onSubmit={form.handleSubmit(onSubmitRejection)} className="space-y-6">
                  <FormField
                    control={form.control}
                    name="overrideStatus"
                    render={({ field }) => (
-                     <FormItem>
-                       <FormLabel>Override Risk Status</FormLabel>
+                     <FormItem className="space-y-3">
+                       <FormLabel className="text-xs font-bold uppercase tracking-wider text-slate-600">Corrected Risk Status</FormLabel>
                        <Select onValueChange={field.onChange} defaultValue={field.value}>
                          <FormControl>
-                           <SelectTrigger>
-                             <SelectValue placeholder="Select new status" />
+                           <SelectTrigger className="h-12 bg-white">
+                             <SelectValue placeholder="Determine safety status" />
                            </SelectTrigger>
                          </FormControl>
                          <SelectContent>
-                           <SelectItem value="SAFE">SAFE - No risk detected</SelectItem>
-                           <SelectItem value="RISK">RISK - Protocol risk present</SelectItem>
+                           <SelectItem value="SAFE">SAFE — No clinical risk flags</SelectItem>
+                           <SelectItem value="RISK">RISK — Significant protocol risk</SelectItem>
                          </SelectContent>
                        </Select>
                        <FormMessage />
@@ -231,12 +236,12 @@ export function ReviewPanel({ sessionId, existingReview }: ReviewPanelProps) {
                    control={form.control}
                    name="note"
                    render={({ field }) => (
-                     <FormItem>
-                       <FormLabel>Supervisor Note</FormLabel>
+                     <FormItem className="space-y-3">
+                       <FormLabel className="text-xs font-bold uppercase tracking-wider text-slate-600">Clinical Justification</FormLabel>
                        <FormControl>
                          <Textarea 
-                           placeholder="Explain why you are rejecting the AI findings..." 
-                           className="resize-none min-h-[100px]" 
+                           placeholder="Document your clinical reasoning for this override..." 
+                           className="resize-none min-h-[120px] bg-white p-4" 
                            {...field} 
                          />
                        </FormControl>
@@ -245,16 +250,24 @@ export function ReviewPanel({ sessionId, existingReview }: ReviewPanelProps) {
                    )}
                  />
                  
-                 <div className="flex gap-3 pt-2">
-                    <Button type="submit" disabled={isSubmitting} variant="destructive">
+                 <div className="flex gap-3 pt-4">
+                    <Button type="submit" disabled={isSubmitting} variant="destructive" className="w-full h-12 font-bold uppercase tracking-widest">
                         {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Submit Review
+                        Submit Clinical Review
                     </Button>
                  </div>
                </form>
              </Form>
           </div>
         )}
+
+        <div className="bg-slate-50 p-4 rounded-lg flex items-start gap-3 border border-slate-100 italic">
+            <AlertCircle className="h-4 w-4 text-slate-400 mt-0.5 shrink-0" />
+            <p className="text-[11px] text-slate-500 leading-normal font-medium">
+                Validation confirms the accuracy of AI-detected scores and risk flags. 
+                All reviews are logged for audit and quality assurance purposes.
+            </p>
+        </div>
       </CardContent>
     </Card>
   );

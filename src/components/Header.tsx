@@ -1,10 +1,11 @@
 import { User } from "lucide-react"
+import Link from "next/link"
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-100 border-t-4 border-t-[#2D6A4F] shadow-sm">
       <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="w-8 h-8 bg-[#2D6A4F] rounded-lg flex items-center justify-center text-white font-bold">
             S
           </div>
@@ -12,7 +13,7 @@ export function Header() {
           <span className="text-xs bg-[#f0fdf4] text-[#2D6A4F] px-2 py-0.5 rounded-full font-medium border border-[#2D6A4F]/10 ml-2">
             Supervisor
           </span>
-        </div>
+        </Link>
         
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">

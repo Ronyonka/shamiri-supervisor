@@ -11,7 +11,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       return (
         <Badge
           variant="outline"
-          className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 font-medium"
+          className="bg-emerald-50/80 text-emerald-700 border-emerald-200 hover:bg-emerald-100 font-medium px-2.5 py-0.5"
         >
           Safe
         </Badge>
@@ -20,7 +20,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       return (
         <Badge
           variant="secondary"
-          className="bg-slate-100 text-slate-600 border-slate-200 font-medium"
+          className="bg-slate-100/80 text-slate-600 border-slate-200 font-medium px-2.5 py-0.5"
         >
           Processed
         </Badge>
@@ -29,35 +29,35 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       return (
         <Badge
           variant="outline"
-          className="bg-amber-100 text-amber-900 border-amber-200 hover:bg-amber-200 font-semibold gap-1.5 py-1 px-3"
+          className="bg-amber-100 text-amber-900 border-amber-200 hover:bg-amber-100 font-semibold gap-1.5 py-1 px-3"
         >
-          <AlertTriangle className="h-4 w-4" />
-          Flagged for Review
+          <AlertTriangle className="h-3.5 w-3.5" />
+          Review Required
         </Badge>
       )
     case "RISK":
       return (
         <Badge
           variant="outline"
-          className="bg-red-50 text-red-700 border-red-300 hover:bg-red-100 font-bold gap-1.5 pl-2 pr-3"
+          className="bg-red-50 text-red-700 border-red-200 hover:bg-red-100 font-semibold gap-1.5 py-1 px-3"
         >
           <ShieldAlert className="h-3.5 w-3.5" />
-          Risk
+          Clinical Risk
         </Badge>
       )
     case "MISSING_ANALYSIS":
       return (
         <Badge
           variant="secondary"
-          className="bg-gray-100 text-gray-500 hover:bg-gray-200 gap-1.5"
+          className="bg-gray-100 text-gray-500 hover:bg-gray-200 gap-1.5 px-2.5 py-0.5"
         >
           <Clock className="h-3.5 w-3.5" />
-          Missing Analysis
+          Pending Analysis
         </Badge>
       )
     default:
       return (
-        <Badge variant="secondary" className="font-medium">
+        <Badge variant="secondary" className="font-medium px-2.5 py-0.5">
           {status}
         </Badge>
       )

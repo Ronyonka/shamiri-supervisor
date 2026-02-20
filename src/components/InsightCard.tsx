@@ -14,74 +14,72 @@ export function InsightCard({ analysis }: InsightCardProps) {
   const isRisk = analysis.riskFlag === "RISK";
 
   return (
-    <Card className="w-full border-l-4 border-l-[#2D6A4F] shadow-sm">
+    <Card className="w-full border-l-[6px] border-l-[#2D6A4F] bg-[#f7fdf9] border-[#2D6A4F]/10 shadow-sm overflow-hidden">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-xl font-semibold text-[#2D6A4F]">
-          <Bot className="h-6 w-6" />
-          AI Session Analysis
+        <CardTitle className="flex items-center gap-2 text-xl font-semibold text-[#1e3a2f]">
+          <Bot className="h-6 w-6 text-[#2D6A4F]" />
+          Session Findings & Quality Analysis
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* A. SESSION SUMMARY */}
-        <div className="space-y-2">
-          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Session Summary</h3>
-          <p className="text-sm leading-relaxed text-foreground">{analysis.summary}</p>
+        <div className="space-y-3">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">Clinical Summary</h3>
+          <p className="text-sm leading-relaxed text-slate-700 font-medium">{analysis.summary}</p>
         </div>
 
-        <Separator />
+        <Separator className="bg-[#2D6A4F]/10" />
 
         {/* B. QUALITY SCORES */}
-        <div className="space-y-6">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Quality Scores</h3>
+        <div className="space-y-8">
+            <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70">Performance Metrics</h3>
             
-            <ScoreRow 
-                label="Content Coverage"
-                score={analysis.contentCoverageScore}
-                justification={analysis.contentCoverageJustification}
-                maxScore={3}
-            />
-            
-            <Separator className="my-2" />
-            
-            <ScoreRow 
-                label="Facilitation Quality"
-                score={analysis.facilitationScore}
-                justification={analysis.facilitationJustification}
-                maxScore={3}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <ScoreRow 
+                    label="Content Coverage"
+                    score={analysis.contentCoverageScore}
+                    justification={analysis.contentCoverageJustification}
+                    maxScore={3}
+                />
+                
+                <ScoreRow 
+                    label="Facilitation Quality"
+                    score={analysis.facilitationScore}
+                    justification={analysis.facilitationJustification}
+                    maxScore={3}
+                />
 
-            <Separator className="my-2" />
-
-            <ScoreRow 
-                label="Protocol Safety"
-                score={analysis.protocolSafetyScore}
-                justification={analysis.protocolSafetyJustification}
-                maxScore={3}
-            />
+                <ScoreRow 
+                    label="Protocol Safety"
+                    score={analysis.protocolSafetyScore}
+                    justification={analysis.protocolSafetyJustification}
+                    maxScore={3}
+                />
+            </div>
         </div>
 
-        <Separator />
+        <Separator className="bg-[#2D6A4F]/10" />
 
         {/* C. RISK FLAG */}
         <div className="pt-2">
             {isRisk ? (
-                <Alert variant="destructive" className="border-red-600 bg-red-50 text-red-900">
+                <Alert variant="destructive" className="border-red-200 bg-red-50/50 text-red-900">
                     <AlertTriangle className="h-5 w-5 text-red-600" />
                     <AlertTitle className="mb-2 text-lg font-bold text-red-700">Protocol Risk Detected</AlertTitle>
                     <AlertDescription className="space-y-3">
-                        <p className="font-semibold">This session has been flagged for immediate supervisor review.</p>
+                        <p className="font-semibold text-sm">This session has been flagged for immediate supervisor review.</p>
                         {analysis.riskQuote && (
-                             <blockquote className="border-l-4 border-red-500 bg-red-100 p-3 italic text-red-900 rounded-r">
+                             <blockquote className="border-l-4 border-red-200 bg-white/50 p-3 italic text-red-900 rounded-r text-sm">
                                 "{analysis.riskQuote}"
                             </blockquote>
                         )}
                     </AlertDescription>
                 </Alert>
             ) : (
-                <Alert className="border-green-600 bg-green-50 text-green-900">
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
-                    <AlertTitle className="text-lg font-semibold text-green-800">No Risk Signals Detected</AlertTitle>
-                    <AlertDescription>
+                <Alert className="border-emerald-200 bg-emerald-50/50 text-emerald-900">
+                    <CheckCircle2 className="h-5 w-5 text-emerald-600" />
+                    <AlertTitle className="text-lg font-semibold text-emerald-800">No Risk Signals Detected</AlertTitle>
+                    <AlertDescription className="text-sm">
                         The session followed safety protocols with no indicators of self-harm or crisis.
                     </AlertDescription>
                 </Alert>
@@ -89,9 +87,9 @@ export function InsightCard({ analysis }: InsightCardProps) {
         </div>
 
         {/* D. DISCLAIMER */}
-        <div className="flex items-center justify-center gap-2 pt-4 text-xs text-muted-foreground">
+        <div className="flex items-center justify-center gap-2 pt-4 text-[10px] font-medium text-muted-foreground/60 uppercase tracking-wider">
             <Bot className="h-3 w-3" />
-            <span>Generated by AI · Pending supervisor review</span>
+            <span>AI-Assisted Analysis · Verified by Supervisor</span>
         </div>
       </CardContent>
     </Card>
@@ -99,15 +97,15 @@ export function InsightCard({ analysis }: InsightCardProps) {
 }
 
 function ScoreRow({ label, score, justification, maxScore }: { label: string, score: number, justification: string, maxScore: number }) {
-    // Generate circles
-    const circles = [];
+    // Generate pills
+    const pills = [];
     for (let i = 1; i <= maxScore; i++) {
-        circles.push(
+        pills.push(
             <div 
                 key={i}
                 className={cn(
-                    "h-3 w-3 rounded-full border border-primary transition-colors",
-                    i <= score ? "bg-primary border-primary" : "bg-transparent border-muted-foreground/30"
+                    "h-1.5 flex-1 rounded-full transition-all duration-500",
+                    i <= score ? "bg-[#2D6A4F]" : "bg-slate-200"
                 )}
             />
         );
@@ -115,25 +113,27 @@ function ScoreRow({ label, score, justification, maxScore }: { label: string, sc
 
     const getScoreLabel = (val: number, type: 'content' | 'facilitation' | 'safety') => {
         const ratings = {
-            content: { 1: "Missed", 2: "Partial", 3: "Complete" },
-            facilitation: { 1: "Poor", 2: "Adequate", 3: "Excellent" },
-            safety: { 1: "Violation", 2: "Minor Drift", 3: "Adherent" }
+            content: { 1: "Limited", 2: "Partial", 3: "Complete" },
+            facilitation: { 1: "Developing", 2: "Proficient", 3: "Exemplary" },
+            safety: { 1: "Flagged", 2: "Variance", 3: "Adherent" }
         };
         // @ts-ignore - indexes are safe
-        const label = ratings[type][val] || "Unknown";
-        return `${val} / ${maxScore} — ${label}`;
+        const labelStr = ratings[type][val] || "Unknown";
+        return labelStr;
     };
 
     return (
-        <div className="space-y-1">
-            <div className="flex items-center justify-between">
-                <span className="font-semibold text-sm">{label}</span>
-                <div className="flex items-center gap-3">
-                    <div className="flex gap-1">{circles}</div>
-                    <span className="text-sm font-medium">{getScoreLabel(score, labelToType(label))}</span>
+        <div className="flex flex-col h-full space-y-3">
+            <div className="space-y-2">
+                <div className="flex items-center justify-between group">
+                    <span className="font-bold text-xs text-slate-800 tracking-tight">{label}</span>
+                    <span className="text-[10px] font-bold text-[#2D6A4F] uppercase tracking-wider">
+                        {getScoreLabel(score, labelToType(label))}
+                    </span>
                 </div>
+                <div className="flex gap-1.5 w-full">{pills}</div>
             </div>
-            <p className="text-xs text-muted-foreground leading-snug">
+            <p className="text-[11px] text-slate-500 leading-relaxed font-medium">
                 {justification}
             </p>
         </div>
