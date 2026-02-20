@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { PrismaClient } from '@prisma/client';
+import { runAnalysis } from '../src/lib/analysisService';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -167,10 +168,18 @@ async function main(): Promise<void> {
         rawText,
       },
     });
+
+    // 6. Trigger AI Analysis automatically
+    try {
+      console.log(`  - Analysing session for ${fellow.name}...`);
+      await runAnalysis(session.id);
+    } catch (err) {
+      console.error(`  - ❌ Analysis failed for session ${session.id}:`, err);
+    }
   }
 
   console.log(
-    '✅ Seeded: 1 supervisor | 3 fellows | 3 groups | 12 sessions | 12 transcripts',
+    '✅ Seeded: 1 supervisor | 3 fellows | 3 groups | 12 sessions | 12 transcripts | 12 analyses',
   );
 }
 

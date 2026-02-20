@@ -73,21 +73,25 @@ export default async function SessionDetailsPage({ params }: PageProps) {
       {/* Main Content */}
       <div className="min-h-[400px]">
         {session.analysis ? (
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-gray-900">AI Analysis</h2>
+                    <AnalyseButton sessionId={session.id} label="Re-analyse" variant="outline" />
+                </div>
                 <InsightCard analysis={session.analysis} />
                 <ReviewPanel sessionId={session.id} existingReview={session.reviews[0]} />
             </div>
         ) : (
              <div className="bg-slate-50 border border-slate-200 rounded-lg p-12 text-center space-y-6">
                 <div className="max-w-md mx-auto space-y-2">
-                    <h3 className="text-lg font-semibold text-gray-900">No Analysis Available</h3>
+                    <h3 className="text-lg font-semibold text-gray-900">Analysis in Progress</h3>
                     <p className="text-muted-foreground">
-                        This session has not been analyzed yet. Run the AI analysis to generate quality scores and risk insights.
+                        This session is being processed. Analysis findings will appear here automatically once ready.
                     </p>
                 </div>
-                {/* Only show analyze button if transcript exists */}
+                {/* Fallback button if auto-analysis hasn't run or failed */}
                 {session.transcript ? (
-                    <AnalyseButton sessionId={session.id} />
+                    <AnalyseButton sessionId={session.id} label="Run Manual Analysis" />
                 ) : (
                     <div className="text-amber-600 font-medium bg-amber-50 inline-block px-4 py-2 rounded-md">
                         Transcript pending upload

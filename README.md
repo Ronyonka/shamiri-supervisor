@@ -105,21 +105,16 @@ The application uses a secure login system restricted to seeded supervisors.
 
 ## AI Analysis Engine
 
-The application includes an internal API to trigger and retrieve session analysis.
+Analysis triggers automatically whenever a transcript is available. If you see "Analysis in Progress" on a session page, the AI is already working in the background.
 
-### Trigger Analysis
-To analyze a specific session (ensure the session exists and has a transcript):
+### Re-analysis
+If an analysis fails or you need to re-run it for any reason, a **Re-analyse** button is available as a secondary action on the session detail page.
 
-```http
-POST /api/sessions/[session-id]/analyze
-```
+### API Reference
+While analysis is automatic, the following endpoints are used by the system:
 
-### Retrieve Results
-To get the analysis results for a session:
-
-```http
-GET /api/sessions/[session-id]/analysis
-```
+**POST** `/api/sessions/[session-id]/analyze` - Triggers/Refreshes analysis.
+**GET** `/api/sessions/[session-id]/analysis` - Retrieves results.
 
 ## Session Status Workflow
 
@@ -127,7 +122,7 @@ Sessions move through four states. AI flags sessions for review; only supervisor
 
 | Status               | Badge  | Meaning                                      |
 | :------------------- | :----- | :------------------------------------------- |
-| **Missing Analysis** | Grey   | AI analysis has not run yet.                 |
+| **Missing Analysis** | Grey   | AI analysis is pending or no transcript exists. |
 | **Processed**        | Blue   | AI analyzed and found no risk. Available for spot-check. |
 | **Flagged for Review** | Amber | AI flagged RISK; requires supervisor review. |
 | **Safe**             | Green  | Supervisor confirmed safe (human-verified).  |

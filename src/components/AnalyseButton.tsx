@@ -3,15 +3,21 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, RefreshCw } from "lucide-react";
 import { InsightCardSkeleton } from "./InsightCardSkeleton";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface AnalyseButtonProps {
   sessionId: string;
+  label?: string;
+  variant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive";
 }
 
-export function AnalyseButton({ sessionId }: AnalyseButtonProps) {
+export function AnalyseButton({ 
+  sessionId, 
+  label = "Analyse Session", 
+  variant = "default" 
+}: AnalyseButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -26,7 +32,6 @@ export function AnalyseButton({ sessionId }: AnalyseButtonProps) {
       });
 
       if (!response.ok) {
-        // Try to parse error message from JSON
         let errorMessage = "Analysis failed";
         try {
             const data = await response.json();
@@ -38,11 +43,11 @@ export function AnalyseButton({ sessionId }: AnalyseButtonProps) {
       }
 
       router.refresh();
+      // Reset loading state after a short delay to allow refresh to manifest
+      setTimeout(() => setIsLoading(false), 1000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred");
-      setIsLoading(false); // Only stop loading on error, on success we wait for refresh/redirect visual update or just keep spinner until UI changes? 
-      // Actually usually better to stop loading too, but router.refresh might be async. 
-      // User says "success: router.refresh() to reload...".
+      setIsLoading(false);
     }
   };
 
@@ -61,15 +66,21 @@ export function AnalyseButton({ sessionId }: AnalyseButtonProps) {
 
         {isLoading ? (
             <div className="space-y-4">
-                <Button disabled className="w-full sm:w-auto">
+                <Button disabled variant={variant} className="w-full sm:w-auto">
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Analysing Session...
+                    Analysing...
                 </Button>
-                <InsightCardSkeleton />
+                {/* Only show skeleton if it's the first analysis (not re-analysis) */}
+                {label === "Analyse Session" && <InsightCardSkeleton />}
             </div>
         ) : (
-            <Button onClick={handleAnalyze} className="w-full sm:w-auto bg-[#2D6A4F] hover:bg-[#1e4635]">
-                Analyse Session
+            <Button 
+                onClick={handleAnalyze} 
+                variant={variant}
+                className={`w-full sm:w-auto ${variant === 'default' ? 'bg-[#2D6A4F] hover:bg-[#1e4635]' : ''}`}
+            >
+                {variant === "outline" && <RefreshCw className="mr-2 h-4 w-4" />}
+                {label}
             </Button>
         )}
     </div>
