@@ -146,6 +146,3 @@ Sessions move through four states. AI flags sessions for review; only supervisor
 - **UI**: Tailwind CSS, shadcn/ui
 - **AI**: OpenAI API
 
-## License
-
-This project is proprietary and confidential to Shamiri Institute.
