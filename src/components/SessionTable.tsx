@@ -73,14 +73,14 @@ export function SessionTable({ sessions }: SessionTableProps) {
                 <TableRow
                   key={session.id}
                   onClick={() => handleRowClick(session.id)}
-                  className="cursor-pointer hover:bg-muted/50"
+                  className="cursor-pointer hover:bg-[#f0fdf4]/50 even:bg-[#f9fafb] transition-colors group"
                 >
-                  <TableCell className="font-medium">
+                  <TableCell className="font-bold py-5 text-slate-900">
                     {session.fellow.name}
                   </TableCell>
-                  <TableCell>{session.group.name}</TableCell>
-                  <TableCell>{formatDate(session.date)}</TableCell>
-                  <TableCell>
+                  <TableCell className="py-5 text-slate-600">{session.group.name}</TableCell>
+                  <TableCell className="py-5 text-slate-600">{formatDate(session.date)}</TableCell>
+                  <TableCell className="py-5">
                     <StatusBadge status={getDisplayStatus(session)} />
                   </TableCell>
                 </TableRow>

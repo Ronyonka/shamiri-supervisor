@@ -19,8 +19,8 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     case "PROCESSED":
       return (
         <Badge
-          variant="outline"
-          className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 font-medium"
+          variant="secondary"
+          className="bg-slate-100 text-slate-600 border-slate-200 font-medium"
         >
           Processed
         </Badge>
@@ -29,9 +29,9 @@ export function StatusBadge({ status }: StatusBadgeProps) {
       return (
         <Badge
           variant="outline"
-          className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100 font-medium gap-1.5"
+          className="bg-amber-100 text-amber-900 border-amber-200 hover:bg-amber-200 font-semibold gap-1.5 py-1 px-3"
         >
-          <AlertTriangle className="h-3.5 w-3.5" />
+          <AlertTriangle className="h-4 w-4" />
           Flagged for Review
         </Badge>
       )
