@@ -128,7 +128,8 @@ Sessions move through four states. AI flags sessions for review; only supervisor
 | Status               | Badge  | Meaning                                      |
 | :------------------- | :----- | :------------------------------------------- |
 | **Missing Analysis** | Grey   | AI analysis has not run yet.                 |
-| **Flagged for Review** | Blue | AI analyzed; awaiting supervisor review.      |
+| **Processed**        | Blue   | AI analyzed and found no risk. Available for spot-check. |
+| **Flagged for Review** | Amber | AI flagged RISK; requires supervisor review. |
 | **Safe**             | Green  | Supervisor confirmed safe (human-verified).  |
 | **Risk**             | Red    | Supervisor confirmed risk (human-verified).  |
 

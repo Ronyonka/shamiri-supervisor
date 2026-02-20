@@ -54,22 +54,37 @@ export function SessionTable({ sessions }: SessionTableProps) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sessions.map((session) => (
-              <TableRow
-                key={session.id}
-                onClick={() => handleRowClick(session.id)}
-                className="cursor-pointer hover:bg-muted/50"
-              >
-                <TableCell className="font-medium">
-                  {session.fellow.name}
-                </TableCell>
-                <TableCell>{session.group.name}</TableCell>
-                <TableCell>{formatDate(session.date)}</TableCell>
-                <TableCell>
-                  <StatusBadge status={getDisplayStatus(session)} />
-                </TableCell>
-              </TableRow>
-            ))}
+            {sessions
+              .sort((a, b) => {
+                const statusA = getDisplayStatus(a)
+                const statusB = getDisplayStatus(b)
+                const priority: Record<string, number> = {
+                  FLAGGED_FOR_REVIEW: 0,
+                  PROCESSED: 1,
+                  RISK: 2,
+                  SAFE: 2,
+                  MISSING_ANALYSIS: 3,
+                }
+                const pA = priority[statusA] ?? 4
+                const pB = priority[statusB] ?? 4
+                return pA - pB
+              })
+              .map((session) => (
+                <TableRow
+                  key={session.id}
+                  onClick={() => handleRowClick(session.id)}
+                  className="cursor-pointer hover:bg-muted/50"
+                >
+                  <TableCell className="font-medium">
+                    {session.fellow.name}
+                  </TableCell>
+                  <TableCell>{session.group.name}</TableCell>
+                  <TableCell>{formatDate(session.date)}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={getDisplayStatus(session)} />
+                  </TableCell>
+                </TableRow>
+              ))}
             {sessions.length === 0 && (
               <TableRow>
                 <TableCell colSpan={4} className="h-24 text-center">
@@ -83,28 +98,43 @@ export function SessionTable({ sessions }: SessionTableProps) {
 
       {/* Mobile View */}
       <div className="space-y-4 md:hidden">
-        {sessions.map((session) => (
-          <Card
-            key={session.id}
-            onClick={() => handleRowClick(session.id)}
-            className="cursor-pointer hover:bg-muted/50 transition-colors"
-          >
-            <CardContent className="p-4 flex flex-col gap-3">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-semibold text-lg">{session.fellow.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {session.group.name}
-                  </p>
+        {sessions
+          .sort((a, b) => {
+            const statusA = getDisplayStatus(a)
+            const statusB = getDisplayStatus(b)
+            const priority: Record<string, number> = {
+              FLAGGED_FOR_REVIEW: 0,
+              PROCESSED: 1,
+              RISK: 2,
+              SAFE: 2,
+              MISSING_ANALYSIS: 3,
+            }
+            const pA = priority[statusA] ?? 4
+            const pB = priority[statusB] ?? 4
+            return pA - pB
+          })
+          .map((session) => (
+            <Card
+              key={session.id}
+              onClick={() => handleRowClick(session.id)}
+              className="cursor-pointer hover:bg-muted/50 transition-colors"
+            >
+              <CardContent className="p-4 flex flex-col gap-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-semibold text-lg">{session.fellow.name}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {session.group.name}
+                    </p>
+                  </div>
+                  <StatusBadge status={getDisplayStatus(session)} />
                 </div>
-                <StatusBadge status={getDisplayStatus(session)} />
-              </div>
-              <div className="text-sm text-muted-foreground">
-                {formatDate(session.date)}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                <div className="text-sm text-muted-foreground">
+                  {formatDate(session.date)}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         {sessions.length === 0 && (
           <div className="text-center p-8 text-muted-foreground border rounded-md border-dashed">
             No sessions found.

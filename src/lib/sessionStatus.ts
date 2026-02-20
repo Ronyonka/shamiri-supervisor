@@ -12,7 +12,9 @@ interface SessionWithStatusData {
  * 1. Review exists → supervisor decision is final
  *    - VALIDATED: supervisor agrees with AI → keep AI's verdict (RISK or SAFE)
  *    - REJECTED:  supervisor disagrees with AI → flip AI's verdict
- * 2. No review, AI analysis exists → FLAGGED_FOR_REVIEW (needs human eyes)
+ * 2. No review, AI analysis exists:
+ *    - RISK: FLAGGED_FOR_REVIEW (urgent supervisor review required)
+ *    - SAFE: PROCESSED (AI-cleared, available for spot-checking)
  * 3. No analysis at all → MISSING_ANALYSIS
  */
 export function getDisplayStatus(session: SessionWithStatusData): string {
@@ -33,7 +35,7 @@ export function getDisplayStatus(session: SessionWithStatusData): string {
 
   // 2. AI analyzed but no review yet
   if (analysis) {
-    return "FLAGGED_FOR_REVIEW"
+    return analysis.riskFlag === "RISK" ? "FLAGGED_FOR_REVIEW" : "PROCESSED"
   }
 
   // 3. No analysis at all

@@ -16,11 +16,20 @@ export function StatusBadge({ status }: StatusBadgeProps) {
           Safe
         </Badge>
       )
+    case "PROCESSED":
+      return (
+        <Badge
+          variant="outline"
+          className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 font-medium"
+        >
+          Processed
+        </Badge>
+      )
     case "FLAGGED_FOR_REVIEW":
       return (
         <Badge
           variant="outline"
-          className="bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 font-medium gap-1.5"
+          className="bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100 font-medium gap-1.5"
         >
           <AlertTriangle className="h-3.5 w-3.5" />
           Flagged for Review

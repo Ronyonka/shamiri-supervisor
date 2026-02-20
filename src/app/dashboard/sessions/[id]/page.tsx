@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import { InsightCard } from "@/components/InsightCard";
 import { AnalyseButton } from "@/components/AnalyseButton";
 import { ReviewPanel } from "@/components/ReviewPanel";
@@ -37,6 +40,13 @@ export default async function SessionDetailsPage({ params }: PageProps) {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <Link href="/dashboard" passHref>
+        <Button variant="ghost" size="sm" className="-ml-3 text-muted-foreground hover:text-foreground">
+          <ChevronLeft className="mr-2 h-4 w-4" />
+          Back to Dashboard
+        </Button>
+      </Link>
+
       {/* Header Row */}
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
