@@ -13,7 +13,7 @@ interface SessionWithStatusData {
  *    - VALIDATED: supervisor agrees with AI → keep AI's verdict (RISK or SAFE)
  *    - REJECTED:  supervisor disagrees with AI → flip AI's verdict
  * 2. No review, AI analysis exists:
- *    - RISK: FLAGGED_FOR_REVIEW (urgent supervisor review required)
+ *    - RISK: FLAGGED_FOR_REVIEW (Flagged for Review)
  *    - SAFE: PROCESSED (AI-cleared, available for spot-checking)
  * 3. No analysis at all → MISSING_ANALYSIS
  */

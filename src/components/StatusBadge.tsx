@@ -32,7 +32,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
           className="bg-amber-100 text-amber-900 border-amber-200 hover:bg-amber-100 font-semibold gap-1.5 py-1 px-3"
         >
           <AlertTriangle className="h-3.5 w-3.5" />
-          Review Required
+          Flagged for Review
         </Badge>
       )
     case "RISK":
