@@ -32,6 +32,7 @@ export default function LoginPage() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const pwd = "shamiri123"
 
   const {
     register,
@@ -41,7 +42,7 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "amara@shamiri.co",
-      password: "shamiri123",
+      password: pwd,
     },
   })
 
