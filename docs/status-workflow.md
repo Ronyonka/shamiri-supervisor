@@ -6,10 +6,10 @@ This document describes how sessions move through status states in the Shamiri S
 
 > **AI flags, humans decide. Efficiency through triage.**
 
-The AI is a triage tool — it surfaces sessions that need attention, but it never makes a final clinical judgment. Only a supervisor can confirm whether a session is truly safe or carries risk.
+The AI is a triage tool , it surfaces sessions that need attention, but it never makes a final clinical judgment. Only a supervisor can confirm whether a session is truly safe or carries risk.
 
 **The Clinical Tradeoff:**
-"Processed" is not a terminal state — it is AI-cleared and available for supervisor spot-checking. Only AI-flagged RISK sessions require mandatory supervisor review (**Flagged for Review**). This is an intentional clinical tradeoff that prioritises supervisor attention on genuine risk signals while preserving the ability to catch false negatives through random sampling of Processed sessions.
+"Processed" is not a terminal state , it is AI-cleared and available for supervisor spot-checking. Only AI-flagged RISK sessions require mandatory supervisor review (**Flagged for Review**). This is an intentional clinical tradeoff that prioritises supervisor attention on genuine risk signals while preserving the ability to catch false negatives through random sampling of Processed sessions.
 
 ## Status States
 
@@ -36,7 +36,7 @@ Session Created (via seed or upload)
          │
          ▼
 ┌─────────────────────┐
-│  Missing Analysis   │  Grey — no AI analysis exists
+│  Missing Analysis   │  Grey : no AI analysis exists
 └─────────┬───────────┘
           │
           │  POST /api/sessions/[id]/analyze
